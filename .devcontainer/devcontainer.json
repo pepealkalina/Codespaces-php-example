@@ -1,0 +1,40 @@
+{
+	"name": "PHP Development",
+	// Usamos una imagen oficial de Microsoft optimizada para devcontainers
+	"image": "mcr.microsoft.com/devcontainers/php:8.2-bookworm",
+
+	// "Features": Aquí instalamos herramientas adicionales sin complicarnos con Dockerfiles
+	"features": {
+		// Instala Node.js (común en PHP para compilar assets o usar npm)
+		"ghcr.io/devcontainers/features/node:1": {},
+		// Instala Composer (Gestor de dependencias de PHP)
+		"ghcr.io/devcontainers/features/common-utils:2": {
+			"configureZshAsDefaultShell": true
+		}
+	},
+
+	// Configuración específica para el editor (VS Code) dentro del navegador
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				// Extensiones esenciales para PHP
+				"bmewburn.vscode-intelephense-client", // Inteligencia de código
+				"xdebug.php-debug",                   // Para depurar errores
+				"mblode.twig-language-2"              // Si usas plantillas (opcional)
+			],
+			"settings": {
+				"php.validate.executablePath": "/usr/local/bin/php"
+			}
+		}
+	},
+
+	// Abre este puerto automáticamente (útil si usas 'php -S localhost:8000')
+	"forwardPorts": [8000],
+
+	// Comandos que se ejecutan después de crear el contenedor
+	// Aquí instalamos dependencias si existe el archivo composer.json
+	"postCreateCommand": "if [ -f composer.json ]; then composer install; fi",
+
+	// Usuario remoto (la imagen base ya incluye el usuario 'vscode')
+	"remoteUser": "vscode"
+}
